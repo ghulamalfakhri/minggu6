@@ -1,9 +1,7 @@
 <?php
-
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\UserController;
-
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -18,10 +16,12 @@ Route::get('/', function () {
     return view('welcome');
 });
 Auth::routes();
-
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-
-Route::resource('students', StudentController::class); 
 Route::resource('students', StudentController::class);
+// Route::get('students/{name}',StudentController::class,'search')->name('search');s
+
+Route::get('students/{id}/detail', [StudentController::class,'detail_nilai'])->name('students.detail');
+
+Route::get('/students/{id}/report', [StudentController::class,'report']);
 
 Route::resource('users', UserController::class); 
