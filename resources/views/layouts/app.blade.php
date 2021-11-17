@@ -30,22 +30,24 @@
                     </ul>
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ml-auto">
-                        <!-- Authentication Links -->
+                        <!-- Authentication Links -->     
                         @auth
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('home') }}">{{ __('Home') }}</a>
                         </li>
-
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('students.index') }}">{{ __('CRUD') }}</a>
-                        </li>
+                        </li>  
 
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('users.index') }}">{{ __('USER DATA') }}</a>
+                            @can('manage-users')
+                            <a class="nav-link" href="{{ route('users.index') }}">{{ __('User Data') }}</a>
+                            @endcan
                         </li>  
                         @endauth
 
                         @guest
+                               
                             @if (Route::has('login'))
                                 <li class="nav-item">
                                     <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
@@ -83,3 +85,6 @@
     </div>
 </body>
 </html>
+0 comments on commit 524acdd
+
+ 

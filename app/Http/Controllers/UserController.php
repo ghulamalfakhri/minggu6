@@ -1,9 +1,9 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
+use Illuminate\Support\Facades\Gate;
 
 class UserController extends Controller
 {
@@ -17,7 +17,6 @@ class UserController extends Controller
         $users = User::all();
         return view('user.index',['users'=>$users]);
     }
-
     /**
      * Show the form for creating a new resource.
      *
@@ -27,7 +26,6 @@ class UserController extends Controller
     {
         return view('user.create');
     }
-
     /**
      * Store a newly created resource in storage.
      *
@@ -41,7 +39,6 @@ class UserController extends Controller
         // if true, redirect to index
         return redirect()->route('users.index')->with('success', 'Add data success!');
     }
-
     /**
      * Display the specified resource.
      *
@@ -53,7 +50,6 @@ class UserController extends Controller
         $users = User::find($id);
         return view('user.show',['users'=>$users]);
     }
-
     /**
      * Show the form for editing the specified resource.
      *
@@ -65,7 +61,6 @@ class UserController extends Controller
         $users = User::find($id);
         return view('user.edit',['users'=>$users]);
     }
-
     /**
      * Update the specified resource in storage.
      *
@@ -82,7 +77,6 @@ class UserController extends Controller
         $users->save();
         return redirect()->route('users.index');
     }
-
     /**
      * Remove the specified resource from storage.
      *
@@ -94,5 +88,15 @@ class UserController extends Controller
         $users = User::find($id);
         $users->delete();
         return redirect()->route('users.index');
+    }
+
+    public function __construct()
+    {
+        $this->middleware('auth');
+        //$this->middleware('auth');
+        $this->middleware(function($request, $next){
+            if (Gate::allows('manage-users')) return $next ($request);
+            abort(403,'Anda tidak memiliki cukup hak akses');
+        });
     }
 }
